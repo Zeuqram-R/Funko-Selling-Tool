@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flyers Funkos — Palm Beach Sale</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+  :root{
+    --ink:#141018;
+    --paper:#efe9e0;
+    --card:#ffffff;
+    --line:#141018;
+    --accent:#ff5a36;
+    --accent-2:#2c6e49;
+    --muted:#7a7368;
+    --tag:#f4c518;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle, rgba(20,16,24,0.07) 1px, transparent 1px);
+    background-size: 14px 14px;
+    color:var(--ink);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    padding-bottom:80px;
+  }
+  header{
+    padding:28px 20px 18px;
+    border-bottom:4px solid var(--ink);
+    background:var(--ink);
+    color:var(--paper);
+    position:sticky;
+    top:0;
+    z-index:20;
+  }
+  header h1{
+    margin:0;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight:900;
+    font-style:italic;
+    font-size:clamp(28px,6vw,44px);
+    letter-spacing:-0.5px;
+  }
+  header .sub{
+    margin-top:4px;
+    font-size:13px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--tag);
+    font-weight:700;
+  }
+  .toolbar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+    padding:16px 20px;
+    background:var(--paper);
+    border-bottom:2px dashed var(--ink);
+    position:sticky;
+    top:96px;
+    z-index:19;
+  }
+  .toolbar input[type=text]{
+    flex:1;
+    min-width:160px;
+    padding:10px 14px;
+    border:2px solid var(--ink);
+    border-radius:999px;
+    font-size:14px;
+    background:var(--card);
+  }
+  .btn{
+    border:2px solid var(--ink);
+    background:var(--ink);
+    color:var(--paper);
+    padding:10px 16px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:13px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:transform .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn.outline{
+    background:transparent;
+    color:var(--ink);
+  }
+  .btn.accent{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#fff;
+  }
+  .count-pill{
+    font-size:12px;
+    font-weight:700;
+    padding:4px 10px;
+    border:2px solid var(--ink);
+    border-radius:999px;
+  }
+  #progress{
+    padding:0 20px;
+    font-size:12px;
+    color:var(--muted);
+    display:none;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+    gap:22px;
+    padding:24px 20px 60px;
+  }
+  .card{
+    background:var(--card);
+    border:3px solid var(--ink);
+    border-radius:4px;
+    box-shadow:6px 6px 0 var(--ink);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .flyer{
+    padding:14px 14px 16px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .photo-box{
+    aspect-ratio:1/1;
+    border:2px dashed var(--muted);
+    border-radius:4px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#f7f4ee;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+  }
+  .photo-box img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    background:#fff;
+  }
+  .photo-box .placeholder{
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    padding:10px;
+    line-height:1.4;
+  }
+  .photo-box .placeholder svg{
+    width:28px;height:28px;margin-bottom:6px;opacity:.6;
+  }
+  .num-tag{
+    position:absolute;
+    top:8px;
+    left:8px;
+    background:var(--ink);
+    color:var(--paper);
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:0.5px;
+    padding:3px 7px;
+    border-radius:3px;
+  }
+  .info{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:8px;
+  }
+  .name{
+    font-weight:800;
+    font-size:15px;
+    line-height:1.15;
+    flex:1;
+  }
+  .price-block{
+    text-align:right;
+    white-space:nowrap;
+  }
+  .price-old{
+    font-size:12px;
+    color:var(--muted);
+    text-decoration:line-through;
+    font-weight:600;
+  }
+  .price{
+    font-family: Georgia, serif;
+    font-weight:900;
+    font-style:italic;
+    font-size:22px;
+    color:var(--accent-2);
+    white-space:nowrap;
+  }
+  .discount-badge{
+    position:absolute;
+    top:8px;
+    right:8px;
+    background:var(--accent);
+    color:#fff;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:0.5px;
+    padding:3px 7px;
+    border-radius:3px;
+    transform:rotate(3deg);
+  }
+  .compare-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .compare-label{
+    font-size:9px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    font-weight:800;
+    color:var(--muted);
+    margin-bottom:4px;
+    display:block;
+  }
+  .amazon-box{
+    aspect-ratio:1/1;
+    border:2px dashed #9aa8c7;
+    border-radius:4px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#eef1f8;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+  }
+  .amazon-box img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    background:#fff;
+  }
+  .amazon-box .placeholder{
+    text-align:center;
+    color:#5b6b8f;
+    font-size:11px;
+    padding:8px;
+    line-height:1.3;
+  }
+  .amazon-box .placeholder svg{
+    width:22px;height:22px;margin-bottom:4px;opacity:.6;
+  }
+  .amazon-tag{
+    position:absolute;
+    top:6px;
+    left:6px;
+    background:#232f3e;
+    color:#f4c518;
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:0.5px;
+    padding:2px 6px;
+    border-radius:3px;
+  }
+  .brand-strip{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-top:2px solid var(--ink);
+    padding-top:8px;
+    font-size:10px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--muted);
+    font-weight:700;
+  }
+  .card-actions{
+    display:flex;
+    gap:8px;
+    padding:0 14px 14px;
+  }
+  .card-actions button{
+    flex:1;
+    padding:8px 4px;
+    font-size:11px;
+    border:2px solid var(--ink);
+    border-radius:999px;
+    background:var(--card);
+    font-weight:700;
+    cursor:pointer;
+  }
+  .card-actions button.dl{
+    background:var(--accent);
+    color:#fff;
+    border-color:var(--accent);
+  }
+  .card[data-hidden="true"]{display:none;}
+  input[type=file]{display:none;}
+  footer{
+    text-align:center;
+    font-size:12px;
+    color:var(--muted);
+    padding:20px;
+  }
+  @media (max-width:480px){
+    .toolbar{top:88px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Palm Beach Funko Sale</h1>
+  <div class="sub">Flyers listos para Marketplace · <span id="totalCount">100</span> piezas</div>
+</header>
+
+<div class="toolbar">
+  <input type="text" id="search" placeholder="Buscar funko por nombre o número...">
+  <span class="count-pill" id="visibleCount">100 / 100</span>
+  <button class="btn outline" id="btnHideDone">Ocultar sin foto</button>
+  <button class="btn accent" id="btnZip">Descargar todos (.zip)</button>
+</div>
+<div id="progress"></div>
+
+<div class="grid" id="grid"></div>
+
+<footer>Hecho para vender rápido y bonito. Toca cualquier foto para reemplazarla.</footer>
+
+<script>
+const FUNKOS = [{"name": "Cell (First Form)", "num": 947, "price": 17.0}, {"name": "Prince Vegeta", "num": 863, "price": 17.0}, {"name": "Mecha Frieza", "num": 705, "price": 16.0}, {"name": "Krillin", "num": 706, "price": 15.0}, {"name": "Kami", "num": 952, "price": 12.0}, {"name": "Mina Ashido", "num": 790, "price": 17.0}, {"name": "Best Jeanist", "num": 786, "price": 16.0}, {"name": "Present Mic", "num": 920, "price": 18.5}, {"name": "Infinite Deku With Eri", "num": 1010, "price": 33.0}, {"name": "Eijiro Unbreakable", "num": 1009, "price": 29.0}, {"name": "Mirio Togata", "num": 1004, "price": 17.0}, {"name": "Ryukyu", "num": 1007, "price": 9.0}, {"name": "Eri", "num": 1011, "price": 16.0}, {"name": "Sir Night Eye", "num": 1006, "price": 12.0}, {"name": "Hawks", "num": 1141, "price": 14.5}, {"name": "All Might", "num": 821, "price": 86.0}, {"name": "Slipknot Corey Taylor", "num": 177, "price": 26.5}, {"name": "Ozuna", "num": 203, "price": 18.5}, {"name": "News Of The World", "num": 6, "price": 29.0}, {"name": "Scratchy", "num": 904, "price": 17.0}, {"name": "Itchy", "num": 903, "price": 17.0}, {"name": "Couch Homer", "num": 909, "price": 24.0}, {"name": "Dwight Schrute As Scranton Strangle", "num": 1045, "price": 12.0}, {"name": "Miles Morales (Bodega Cat Suit)", "num": 767, "price": 16.0}, {"name": "Miles Morales (Purple Rain)", "num": 839, "price": 17.0}, {"name": "Miles Morales (S.T.R.I.K.E. Suit)", "num": 766, "price": 16.0}, {"name": "Miles Morales (Crimson Cowl Suit)", "num": 770, "price": 14.5}, {"name": "Miles Morales (2020 Suit)", "num": 769, "price": 14.5}, {"name": "Backyard Griller Deadpool", "num": 774, "price": 16.0}, {"name": "Arachknight", "num": 859, "price": 17.0}, {"name": "Miles Morales (Programmable Matter Suit)", "num": 773, "price": 16.0}, {"name": "Miles Morales (Advanced Tech Suit)", "num": 772, "price": 16.0}, {"name": "Miles Morales (Winter Suit)", "num": 771, "price": 16.0}, {"name": "Godspeed", "num": 1100, "price": 16.0}, {"name": "Thor Captain America Black Widow Hawkeye Hulk Iron Man", "num": null, "price": 66.0}, {"name": "Sinister Six Doctor Octopus", "num": 1013, "price": 25.0}, {"name": "Zombie Hunter Spidey", "num": 945, "price": 17.0}, {"name": "Rogue", "num": 423, "price": 29.0}, {"name": "Hulk", "num": 463, "price": 21.0}, {"name": "Kenny", "num": 463, "price": 12.0}, {"name": "Blue Eyes Toon Dragon", "num": 1062, "price": 17.0}, {"name": "Mai Valentine", "num": 1060, "price": 14.5}, {"name": "Maximillion Pegasus", "num": 716, "price": 17.0}, {"name": "Boruto", "num": 1035, "price": 13.0}, {"name": "Kawaki", "num": 1036, "price": 10.5}, {"name": "Shikadai", "num": 1039, "price": 6.5}, {"name": "Eevee", "num": 577, "price": 16.0}, {"name": "Mew", "num": 643, "price": 18.5}, {"name": "Charizard", "num": 843, "price": 17.0}, {"name": "Pidgeotto", "num": 849, "price": 16.0}, {"name": "Dragonite", "num": 850, "price": 20.0}, {"name": "Lucario", "num": 856, "price": 18.5}, {"name": "Queen Summer", "num": 955, "price": 18.5}, {"name": "Story Train Evil Morty", "num": 953, "price": 17.0}, {"name": "Death Crystal Morty", "num": 660, "price": 18.5}, {"name": "Morty With Laptop", "num": 742, "price": 21.0}, {"name": "Gamer Rick", "num": 741, "price": 26.5}, {"name": "Tracksuit Jerry", "num": 574, "price": 31.5}, {"name": "Korvo", "num": 974, "price": 16.0}, {"name": "Jesse", "num": 977, "price": 10.5}, {"name": "Yumyulack", "num": 976, "price": 13.0}, {"name": "Beth Harmon With Trophies", "num": 1121, "price": 10.5}, {"name": "Beth Harmon With Rook", "num": 1122, "price": 6.5}, {"name": "Beth Harmon Final Game", "num": 1123, "price": 13.0}, {"name": "Albus Dumbledore With Hogwarts", "num": 27, "price": 29.0}, {"name": "Harry Potter Pushing Trolley", "num": 135, "price": 34.5}, {"name": "Hermione Granger", "num": 133, "price": 14.5}, {"name": "Harry Potter", "num": 132, "price": 14.5}, {"name": "Ron Weasley", "num": 134, "price": 16.0}, {"name": "Sub-Zero", "num": 1057, "price": 18.5}, {"name": "Ned Stark", "num": 93, "price": 29.0}, {"name": "Khal Drogo", "num": 90, "price": 20.0}, {"name": "Fire Lord Ozai", "num": 999, "price": 13.0}, {"name": "Asuna", "num": 989, "price": 17.0}, {"name": "Kirito", "num": 990, "price": 18.5}, {"name": "Leafa", "num": 991, "price": 10.5}, {"name": "Lumpy Space Princess", "num": 1075, "price": 21.0}, {"name": "Princess Bubblegum", "num": 1076, "price": 24.0}, {"name": "Sulley", "num": 1156, "price": 16.0}, {"name": "Celia", "num": 1154, "price": 13.0}, {"name": "Buzz Lightyear Xl-01", "num": 1210, "price": 24.0}, {"name": "Player 001 Oh Il Nam", "num": 1223, "price": 12.0}, {"name": "Player 456 Seong Gi Hun", "num": 1222, "price": 14.5}, {"name": "Player 067 Kang Sa Byeok", "num": 1224, "price": 16.0}, {"name": "Round Masked Worker", "num": 1226, "price": 13.0}, {"name": "Player 199 Ali", "num": 1221, "price": 10.5}, {"name": "Player 218 Cho Sang Woo", "num": 1225, "price": 10.5}, {"name": "Ciri", "num": 1191, "price": 12.0}, {"name": "Jaskier", "num": 1194, "price": 12.0}, {"name": "Yennefer", "num": 1193, "price": 10.5}, {"name": "Geralt", "num": 1168, "price": 21.0}, {"name": "Geralt", "num": 1192, "price": 10.5}, {"name": "Neo", "num": 1172, "price": 16.0}, {"name": "Eleven", "num": 1185, "price": 26.5}, {"name": "Duel Of The Fates Darth Maul", "num": 506, "price": 39.5}, {"name": "Helsinki", "num": 913, "price": 12.0}, {"name": "Oslo", "num": 914, "price": 16.0}, {"name": "Rio", "num": 917, "price": 16.0}, {"name": "Moscu", "num": 918, "price": 18.5}, {"name": "Jhonny Silverhand", "num": 590, "price": 29.0}];
+
+const grid = document.getElementById('grid');
+const totalCount = document.getElementById('totalCount');
+const visibleCount = document.getElementById('visibleCount');
+totalCount.textContent = FUNKOS.length;
+
+// iPadOS reports as "MacIntosh" with touch support, so check that too.
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+// Safari on iOS/iPadOS ignores the `download` attribute, so the file never
+// reaches the Files/Photos app that way. Instead, open the image full-screen
+// in a new tab so the person can long-press it and choose "Add to Photos".
+async function saveCanvasImage(canvas, filename, preOpenedWin) {
+  if (navigator.share && canvas.toBlob) {
+    // Best path on iOS: native share sheet has a real "Save Image" option.
+    try {
+      const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+      const file = new File([blob], filename, {type: 'image/png'});
+      if (navigator.canShare && navigator.canShare({files: [file]})) {
+        if (preOpenedWin) preOpenedWin.close();
+        await navigator.share({files: [file], title: filename});
+        return;
+      }
+    } catch (err) {
+      // Fall through to the other methods below if sharing was cancelled or unsupported.
+    }
+  }
+  if (isIOS) {
+    const win = preOpenedWin && !preOpenedWin.closed ? preOpenedWin : window.open();
+    if (win) {
+      win.document.write(`<img src="${canvas.toDataURL('image/png')}" style="width:100%;height:auto;">`);
+      win.document.title = filename;
+    } else {
+      alert('Habilita las ventanas emergentes para este sitio en Ajustes > Safari, o abre este archivo directamente en Safari (no dentro de la app de Claude) para poder guardar la imagen.');
+    }
+    return;
+  }
+  const link = document.createElement('a');
+  link.download = filename;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+FUNKOS.forEach((f, i) => {
+  const id = 'card_' + i;
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.name = f.name.toLowerCase();
+  card.dataset.num = f.num ? String(f.num) : '';
+  card.dataset.hasPhoto = 'false';
+  card.id = id;
+
+  const numTag = f.num ? ('#' + f.num) : 'POP';
+  const hasPrice = f.price != null;
+  const priceStr = hasPrice ? ('$' + f.price.toFixed(2)) : 'Consultar';
+
+  card.innerHTML = `
+    <div class="flyer" id="${id}_flyer">
+      <div class="compare-row">
+        <div>
+          <span class="compare-label">Mi precio</span>
+          <div class="photo-box" data-idx="${i}">
+            <span class="num-tag">${numTag}</span>
+            <div class="placeholder">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 15l-5-5-9 9"/></svg>
+              Toca para<br>agregar foto
+            </div>
+          </div>
+        </div>
+        <div>
+          <span class="compare-label">Precio en Amazon</span>
+          <div class="amazon-box" data-idx="${i}">
+            <span class="amazon-tag">amazon</span>
+            <div class="placeholder">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 15l-5-5-9 9"/></svg>
+              Screenshot<br>de Amazon
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="info">
+        <div class="name">${f.name}</div>
+        <div class="price-block">
+          <div class="price">${priceStr}</div>
+        </div>
+      </div>
+      <div class="brand-strip"><span>Funko Pop</span><span>${numTag}</span></div>
+    </div>
+    <div class="card-actions">
+      <button class="pick">Mi foto</button>
+      <button class="pickAmazon">Foto Amazon</button>
+      <button class="dl">Descargar</button>
+    </div>
+    <input type="file" accept="image/*" id="${id}_input">
+    <input type="file" accept="image/*" id="${id}_input_amazon">
+  `;
+  grid.appendChild(card);
+
+  const photoBox = card.querySelector('.photo-box');
+  const amazonBox = card.querySelector('.amazon-box');
+  const fileInput = card.querySelector(`#${id}_input`);
+  const amazonInput = card.querySelector(`#${id}_input_amazon`);
+  const pickBtn = card.querySelector('.pick');
+  const pickAmazonBtn = card.querySelector('.pickAmazon');
+  const dlBtn = card.querySelector('.dl');
+
+  const openPicker = () => fileInput.click();
+  photoBox.addEventListener('click', openPicker);
+  pickBtn.addEventListener('click', openPicker);
+
+  const openAmazonPicker = () => amazonInput.click();
+  amazonBox.addEventListener('click', openAmazonPicker);
+  pickAmazonBtn.addEventListener('click', openAmazonPicker);
+
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      photoBox.innerHTML = `<span class="num-tag">${numTag}</span><img src="${ev.target.result}">`;
+      card.dataset.hasPhoto = 'true';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  amazonInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      amazonBox.innerHTML = `<span class="amazon-tag">amazon</span><img src="${ev.target.result}">`;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  dlBtn.addEventListener('click', async () => {
+    dlBtn.textContent = '...';
+    // Open the tab immediately, synchronously with the click, so iOS Safari
+    // doesn't treat it as a blocked popup once the async render finishes.
+    const preOpenedWin = isIOS ? window.open('about:blank') : null;
+    const canvas = await html2canvas(card.querySelector('.flyer'), {scale: 3, backgroundColor: '#ffffff'});
+    const filename = f.name.replace(/[^a-z0-9]+/gi, '_') + '.png';
+    await saveCanvasImage(canvas, filename, preOpenedWin);
+    dlBtn.textContent = 'Descargar';
+  });
+});
+
+function applyFilter() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const hideNoPhoto = document.getElementById('btnHideDone').dataset.active === 'true';
+  let visible = 0;
+  document.querySelectorAll('.card').forEach(card => {
+    const matchesSearch = !q || card.dataset.name.includes(q) || card.dataset.num.includes(q);
+    const matchesPhoto = !hideNoPhoto || card.dataset.hasPhoto === 'true';
+    const show = matchesSearch && matchesPhoto;
+    card.dataset.hidden = show ? 'false' : 'true';
+    if (show) visible++;
+  });
+  visibleCount.textContent = visible + ' / ' + FUNKOS.length;
+}
+
+document.getElementById('search').addEventListener('input', applyFilter);
+
+const btnHideDone = document.getElementById('btnHideDone');
+btnHideDone.dataset.active = 'false';
+btnHideDone.addEventListener('click', () => {
+  const active = btnHideDone.dataset.active === 'true';
+  btnHideDone.dataset.active = active ? 'false' : 'true';
+  btnHideDone.textContent = active ? 'Ocultar sin foto' : 'Mostrar todos';
+  applyFilter();
+});
+
+document.getElementById('btnZip').addEventListener('click', async () => {
+  const progress = document.getElementById('progress');
+  const targets = Array.from(document.querySelectorAll('.card')).filter(c => c.dataset.hasPhoto === 'true');
+  if (targets.length === 0) {
+    alert('Agrega al menos una foto antes de descargar el ZIP.');
+    return;
+  }
+  if (isIOS) {
+    alert('En iPad el ZIP no siempre se guarda bien. Mejor usa "Descargar" en cada tarjeta \u2014 se abrir\u00e1n para que las guardes una por una en Fotos.');
+    return;
+  }
+  progress.style.display = 'block';
+  const zip = new JSZip();
+  for (let i = 0; i < targets.length; i++) {
+    const card = targets[i];
+    progress.textContent = `Generando ${i+1} / ${targets.length}...`;
+    const canvas = await html2canvas(card.querySelector('.flyer'), {scale: 3, backgroundColor: '#ffffff'});
+    const dataUrl = canvas.toDataURL('image/png').split(',')[1];
+    const name = card.querySelector('.name').textContent.replace(/[^a-z0-9]+/gi, '_');
+    zip.file(name + '.png', dataUrl, {base64: true});
+  }
+  progress.textContent = 'Empaquetando ZIP...';
+  const blob = await zip.generateAsync({type: 'blob'});
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'flyers_funkos.zip';
+  link.click();
+  progress.style.display = 'none';
+});
+</script>
+</body>
+</html>
