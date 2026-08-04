@@ -733,6 +733,21 @@ async function saveCanvasImage(canvas, filename) {
   }
 }
 
+// Some Funko Pop numbers repeat across different franchises (e.g. #463 is
+// both Kenny and Hulk in this collection). Detect those collisions so their
+// photo keys can be made unique — otherwise they'd overwrite each other's
+// cloud photo.
+const numCounts = {};
+FUNKOS.forEach(f => { if (f.num) numCounts[f.num] = (numCounts[f.num] || 0) + 1; });
+function slugify(str) {
+  return str.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+}
+function photoKeyFor(f, i, prefix) {
+  const base = f.num || `idx${i}`;
+  const isDuplicateNum = f.num && numCounts[f.num] > 1;
+  return isDuplicateNum ? `${prefix}_${base}_${slugify(f.name)}` : `${prefix}_${base}`;
+}
+
 FUNKOS.forEach((f, i) => {
   const id = 'card_' + i;
   const card = document.createElement('div');
@@ -806,8 +821,8 @@ FUNKOS.forEach((f, i) => {
   const pickAmazonBtn = card.querySelector('.pickAmazon');
   const dlBtn = card.querySelector('.dl');
 
-  const myPhotoKey = `myphoto_${f.num || i}`;
-  const amazonPhotoKey = `amazonphoto_${f.num || i}`;
+  const myPhotoKey = photoKeyFor(f, i, 'myphoto');
+  const amazonPhotoKey = photoKeyFor(f, i, 'amazonphoto');
   const myPhotoCloudUrl = cloudinaryUrl(myPhotoKey);
   const amazonPhotoCloudUrl = cloudinaryUrl(amazonPhotoKey);
 
