@@ -98,21 +98,46 @@
     top:98px;
     z-index:19;
   }
-  .toolbar input[type=text]{
+  .search-wrap{
+    position:relative;
     flex:1;
     min-width:160px;
-    padding:11px 16px;
+  }
+  .toolbar input[type=text]{
+    width:100%;
+    padding:11px 40px 11px 16px;
     border:3px solid var(--ink);
     border-radius:999px;
     font-size:14px;
     font-family:'Poppins',sans-serif;
     font-weight:600;
     background:#fff;
+    box-sizing:border-box;
   }
   .toolbar input[type=text]:focus{
     outline:none;
     box-shadow:0 0 0 3px var(--yellow);
   }
+  #btnClearSearch{
+    display:none;
+    position:absolute;
+    right:8px;
+    top:50%;
+    transform:translateY(-50%);
+    width:26px;
+    height:26px;
+    border:none;
+    border-radius:50%;
+    background:var(--ink);
+    color:#fff;
+    font-size:13px;
+    font-weight:800;
+    line-height:1;
+    cursor:pointer;
+    align-items:center;
+    justify-content:center;
+  }
+  #btnClearSearch.show{ display:flex; }
   .btn{
     border:3px solid var(--ink);
     background:#fff;
@@ -160,6 +185,45 @@
     display:flex;
     flex-direction:column;
     position:relative;
+  }
+  .select-check{
+    position:absolute;
+    top:14px;
+    left:14px;
+    z-index:5;
+    cursor:pointer;
+    display:block;
+  }
+  .select-check input{
+    position:absolute;
+    opacity:0;
+    width:26px;
+    height:26px;
+    margin:0;
+    cursor:pointer;
+  }
+  .select-check span{
+    display:block;
+    width:26px;
+    height:26px;
+    border-radius:8px;
+    background:rgba(0,0,0,.35);
+    border:2.5px solid rgba(255,255,255,.55);
+    box-sizing:border-box;
+    transition:background .12s, border-color .12s;
+  }
+  .select-check input:checked + span{
+    background:var(--orange);
+    border-color:var(--ink);
+  }
+  .select-check input:checked + span::after{
+    content:'✓';
+    display:block;
+    text-align:center;
+    line-height:22px;
+    color:#fff;
+    font-weight:900;
+    font-size:15px;
   }
   .card-stripe{ height:9px; background:var(--orange); position:relative; z-index:1; }
   .card[data-accent="1"] .card-stripe{ background:var(--blue); }
@@ -436,10 +500,14 @@
 </header>
 
 <div class="toolbar">
-  <input type="text" id="search" placeholder="🔍 Busca tu Funko por nombre o número...">
+  <div class="search-wrap">
+    <input type="text" id="search" placeholder="🔍 Busca tu Funko por nombre o número...">
+    <button id="btnClearSearch" aria-label="Limpiar búsqueda">✕</button>
+  </div>
   <span class="count-pill" id="visibleCount">100 / 100</span>
   <button class="btn outline" id="btnHideDone">Ocultar sin foto</button>
   <button class="btn accent" id="btnZip">Descargar todos (.zip)</button>
+  <button class="btn accent" id="btnDownloadSelected">Descargar seleccionados (<span id="selectedCount">0</span>)</button>
   <button class="btn outline" id="btnClearPhotos">Borrar fotos guardadas</button>
 </div>
 <div id="progress"></div>
@@ -803,6 +871,10 @@ FUNKOS.forEach((f, i) => {
         </div>
       </div>
     </div>
+    <label class="select-check">
+      <input type="checkbox" class="select-box">
+      <span></span>
+    </label>
     <div class="card-actions">
       <button class="pick">Mi foto</button>
       <button class="pickAmazon">Foto Amazon</button>
@@ -812,6 +884,12 @@ FUNKOS.forEach((f, i) => {
     <input type="file" accept="image/*" id="${id}_input_amazon">
   `;
   grid.appendChild(card);
+
+  const selectBox = card.querySelector('.select-box');
+  selectBox.addEventListener('change', () => {
+    card.dataset.selected = selectBox.checked ? 'true' : 'false';
+    updateSelectedCount();
+  });
 
   const photoBox = card.querySelector('.photo-box');
   const amazonBox = card.querySelector('.amazon-box');
@@ -896,6 +974,11 @@ FUNKOS.forEach((f, i) => {
   });
 });
 
+function updateSelectedCount() {
+  const n = document.querySelectorAll('.card[data-selected="true"]').length;
+  document.getElementById('selectedCount').textContent = n;
+}
+
 function applyFilter() {
   const q = document.getElementById('search').value.trim().toLowerCase();
   const hideNoPhoto = document.getElementById('btnHideDone').dataset.active === 'true';
@@ -910,7 +993,18 @@ function applyFilter() {
   visibleCount.textContent = visible + ' / ' + FUNKOS.length;
 }
 
-document.getElementById('search').addEventListener('input', applyFilter);
+document.getElementById('search').addEventListener('input', () => {
+  document.getElementById('btnClearSearch').classList.toggle('show', document.getElementById('search').value.length > 0);
+  applyFilter();
+});
+
+document.getElementById('btnClearSearch').addEventListener('click', () => {
+  const search = document.getElementById('search');
+  search.value = '';
+  document.getElementById('btnClearSearch').classList.remove('show');
+  applyFilter();
+  search.focus();
+});
 
 document.getElementById('btnClearPhotos').addEventListener('click', async () => {
   if (!confirm('Esto borra la caché LOCAL de fotos en este dispositivo (las copias en la nube de Cloudinary no se tocan). ¿Seguro?')) return;
@@ -953,6 +1047,48 @@ document.getElementById('btnZip').addEventListener('click', async () => {
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);
   link.download = 'flyers_funkos.zip';
+  link.click();
+  progress.style.display = 'none';
+});
+
+document.getElementById('btnDownloadSelected').addEventListener('click', async () => {
+  const progress = document.getElementById('progress');
+  const targets = Array.from(document.querySelectorAll('.card[data-selected="true"]'));
+  if (targets.length === 0) {
+    alert('Marca al menos una tarjeta con la casilla de la esquina antes de descargar.');
+    return;
+  }
+
+  if (isIOS) {
+    // No popups/zip reliability on iOS — reuse the same per-card save flow
+    // (native share sheet first, blob download as fallback), one after another.
+    for (let i = 0; i < targets.length; i++) {
+      const card = targets[i];
+      progress.style.display = 'block';
+      progress.textContent = `Guardando ${i+1} / ${targets.length}...`;
+      const canvas = await html2canvas(card.querySelector('.flyer'), {scale: 3, backgroundColor: null, useCORS: true});
+      const filename = card.querySelector('.name').textContent.replace(/[^a-z0-9]+/gi, '_') + '.png';
+      await saveCanvasImage(canvas, filename);
+    }
+    progress.style.display = 'none';
+    return;
+  }
+
+  progress.style.display = 'block';
+  const zip = new JSZip();
+  for (let i = 0; i < targets.length; i++) {
+    const card = targets[i];
+    progress.textContent = `Generando ${i+1} / ${targets.length}...`;
+    const canvas = await html2canvas(card.querySelector('.flyer'), {scale: 3, backgroundColor: null, useCORS: true});
+    const dataUrl = canvas.toDataURL('image/png').split(',')[1];
+    const name = card.querySelector('.name').textContent.replace(/[^a-z0-9]+/gi, '_');
+    zip.file(name + '.png', dataUrl, {base64: true});
+  }
+  progress.textContent = 'Empaquetando ZIP...';
+  const blob = await zip.generateAsync({type: 'blob'});
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'flyers_seleccionados.zip';
   link.click();
   progress.style.display = 'none';
 });
