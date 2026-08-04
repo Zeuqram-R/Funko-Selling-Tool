@@ -506,6 +506,7 @@
   </div>
   <span class="count-pill" id="visibleCount">100 / 100</span>
   <button class="btn outline" id="btnHideDone">Ocultar sin foto</button>
+  <button class="btn outline" id="btnSelectAll">Seleccionar todo</button>
   <button class="btn accent" id="btnZip">Descargar todos (.zip)</button>
   <button class="btn accent" id="btnDownloadSelected">Descargar seleccionados (<span id="selectedCount">0</span>)</button>
   <button class="btn outline" id="btnClearPhotos">Borrar fotos guardadas</button>
@@ -1004,6 +1005,18 @@ document.getElementById('btnClearSearch').addEventListener('click', () => {
   document.getElementById('btnClearSearch').classList.remove('show');
   applyFilter();
   search.focus();
+});
+
+document.getElementById('btnSelectAll').addEventListener('click', () => {
+  const visibleCards = Array.from(document.querySelectorAll('.card')).filter(c => c.dataset.hidden !== 'true');
+  if (visibleCards.length === 0) return;
+  const allAlreadySelected = visibleCards.every(c => c.dataset.selected === 'true');
+  visibleCards.forEach(c => {
+    c.dataset.selected = allAlreadySelected ? 'false' : 'true';
+    const box = c.querySelector('.select-box');
+    if (box) box.checked = !allAlreadySelected;
+  });
+  updateSelectedCount();
 });
 
 document.getElementById('btnClearPhotos').addEventListener('click', async () => {
