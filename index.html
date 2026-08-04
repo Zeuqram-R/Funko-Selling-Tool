@@ -3,54 +3,87 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flyers Funkos — Palm Beach Sale</title>
+<title>FUNKO SALE — Palm Beach Collector Drop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Poppins:wght@500;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
   :root{
-    --ink:#141018;
-    --paper:#efe9e0;
-    --card:#ffffff;
-    --line:#141018;
-    --accent:#ff5a36;
-    --accent-2:#2c6e49;
-    --muted:#7a7368;
-    --tag:#f4c518;
+    --ink:#0c0c12;
+    --paper:#fbf9f4;
+    --card:#15151f;
+    --window:#ffffff;
+    --orange:#ff5a1f;
+    --blue:#0093d0;
+    --pink:#ff3d78;
+    --yellow:#ffc629;
+    --muted:#8d8a9c;
+    --amazon-navy:#131921;
+    --amazon-gold:#ff9900;
   }
   *{box-sizing:border-box;}
   body{
     margin:0;
     background:var(--paper);
-    background-image:
-      radial-gradient(circle, rgba(20,16,24,0.07) 1px, transparent 1px);
-    background-size: 14px 14px;
+    background-image: radial-gradient(var(--orange) 1.6px, transparent 1.6px);
+    background-size: 22px 22px;
+    background-position: -6px -6px;
     color:var(--ink);
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family:'Poppins', system-ui, sans-serif;
     padding-bottom:80px;
   }
   header{
-    padding:28px 20px 18px;
-    border-bottom:4px solid var(--ink);
-    background:var(--ink);
-    color:var(--paper);
+    padding:22px 20px 20px;
+    background:
+      radial-gradient(circle at 85% -10%, rgba(255,90,31,.35), transparent 55%),
+      var(--ink);
+    background-image:
+      radial-gradient(circle at 85% -10%, rgba(255,90,31,.35), transparent 55%),
+      radial-gradient(rgba(255,255,255,0.06) 1.4px, transparent 1.4px),
+      linear-gradient(var(--ink),var(--ink));
+    background-size: auto, 16px 16px, auto;
+    border-bottom:5px solid var(--yellow);
     position:sticky;
     top:0;
     z-index:20;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .pop-badge{
+    flex:0 0 auto;
+    width:56px;height:56px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--yellow);
+    border:4px solid var(--ink);
+    border-radius:50%;
+    font-family:'Bungee',cursive;
+    font-size:13px;
+    color:var(--ink);
+    transform:rotate(-9deg);
+    box-shadow:3px 3px 0 rgba(0,0,0,.5);
   }
   header h1{
     margin:0;
-    font-family: Georgia, 'Times New Roman', serif;
-    font-weight:900;
-    font-style:italic;
-    font-size:clamp(28px,6vw,44px);
-    letter-spacing:-0.5px;
+    font-family:'Bungee', cursive;
+    font-weight:400;
+    font-size:clamp(26px,7vw,42px);
+    line-height:1;
+    letter-spacing:0.5px;
+    color:#fff;
+    -webkit-text-stroke:2px var(--ink);
+    text-shadow: 3px 3px 0 var(--orange), 6px 6px 0 rgba(0,0,0,.55);
   }
+  header h1 span{ color:var(--yellow); -webkit-text-stroke:2px var(--ink); }
   header .sub{
-    margin-top:4px;
-    font-size:13px;
-    letter-spacing:2px;
+    margin-top:6px;
+    font-family:'Space Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:1px;
     text-transform:uppercase;
-    color:var(--tag);
+    color:var(--yellow);
     font-weight:700;
   }
   .toolbar{
@@ -58,89 +91,134 @@
     gap:10px;
     flex-wrap:wrap;
     align-items:center;
-    padding:16px 20px;
+    padding:14px 20px;
     background:var(--paper);
-    border-bottom:2px dashed var(--ink);
+    border-bottom:3px dashed var(--ink);
     position:sticky;
-    top:96px;
+    top:98px;
     z-index:19;
   }
   .toolbar input[type=text]{
     flex:1;
     min-width:160px;
-    padding:10px 14px;
-    border:2px solid var(--ink);
+    padding:11px 16px;
+    border:3px solid var(--ink);
     border-radius:999px;
     font-size:14px;
-    background:var(--card);
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    background:#fff;
+  }
+  .toolbar input[type=text]:focus{
+    outline:none;
+    box-shadow:0 0 0 3px var(--yellow);
   }
   .btn{
-    border:2px solid var(--ink);
-    background:var(--ink);
-    color:var(--paper);
-    padding:10px 16px;
+    border:3px solid var(--ink);
+    background:#fff;
+    color:var(--ink);
+    padding:9px 16px;
     border-radius:999px;
-    font-weight:700;
-    font-size:13px;
+    font-weight:800;
+    font-size:12.5px;
     cursor:pointer;
     white-space:nowrap;
-    transition:transform .15s ease;
+    box-shadow:3px 3px 0 var(--ink);
+    transition:transform .1s ease, box-shadow .1s ease;
   }
-  .btn:hover{transform:translateY(-1px);}
-  .btn.outline{
-    background:transparent;
-    color:var(--ink);
-  }
-  .btn.accent{
-    background:var(--accent);
-    border-color:var(--accent);
-    color:#fff;
-  }
+  .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink);}
+  .btn.outline{ background:#fff; color:var(--ink); }
+  .btn.accent{ background:var(--orange); border-color:var(--ink); color:#fff; }
   .count-pill{
+    font-family:'Space Mono',monospace;
     font-size:12px;
     font-weight:700;
-    padding:4px 10px;
-    border:2px solid var(--ink);
+    padding:6px 12px;
+    border:3px solid var(--ink);
     border-radius:999px;
+    background:var(--blue);
+    color:#fff;
   }
   #progress{
-    padding:0 20px;
+    padding:6px 20px 0;
+    font-family:'Space Mono',monospace;
     font-size:12px;
-    color:var(--muted);
+    color:var(--ink);
     display:none;
   }
   .grid{
     display:grid;
     grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-    gap:22px;
-    padding:24px 20px 60px;
+    gap:26px;
+    padding:26px 20px 60px;
   }
   .card{
     background:var(--card);
-    border:3px solid var(--ink);
-    border-radius:4px;
-    box-shadow:6px 6px 0 var(--ink);
+    border-radius:16px;
+    box-shadow:7px 7px 0 rgba(12,12,18,.25);
     overflow:hidden;
     display:flex;
     flex-direction:column;
+    position:relative;
+  }
+  .card-stripe{ height:9px; background:var(--orange); position:relative; z-index:1; }
+  .card[data-accent="1"] .card-stripe{ background:var(--blue); }
+  .card[data-accent="2"] .card-stripe{ background:var(--pink); }
+  .franchise-tag{
+    position:absolute;
+    top:14px;
+    right:14px;
+    font-family:'Space Mono',monospace;
+    font-size:7px;
+    letter-spacing:.3px;
+    text-transform:uppercase;
+    color:rgba(255,255,255,.55);
+    background:rgba(255,255,255,.08);
+    padding:2px 7px;
+    border-radius:999px;
+    z-index:2;
+  }
+  .flyer-body{ position:relative; z-index:1; }
+  .exclusive-tag{
+    position:absolute;
+    top:14px;
+    right:-30px;
+    background:var(--yellow);
+    color:var(--ink);
+    font-family:'Bungee',cursive;
+    font-size:9.5px;
+    padding:4px 34px;
+    transform:rotate(40deg);
+    box-shadow:0 2px 0 rgba(0,0,0,.4);
+    z-index:3;
   }
   .flyer{
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    border-radius:16px 16px 0 0;
+    background:var(--card);
+    overflow:hidden;
+  }
+  .flyer-body{
     padding:14px 14px 16px;
     display:flex;
     flex-direction:column;
-    gap:10px;
+    gap:12px;
   }
   .photo-box{
     aspect-ratio:1/1;
-    border:2px dashed var(--muted);
-    border-radius:4px;
+    border:3px solid #fff;
+    border-radius:14px;
     display:flex;
     align-items:center;
     justify-content:center;
-    background:#f7f4ee;
+    background:var(--window);
     cursor:pointer;
     position:relative;
     overflow:hidden;
+    box-shadow: inset 0 0 0 2px rgba(0,0,0,.06);
   }
   .photo-box img{
     width:100%;
@@ -151,35 +229,36 @@
   .photo-box .placeholder{
     text-align:center;
     color:var(--muted);
-    font-size:12px;
+    font-size:11.5px;
+    font-weight:700;
     padding:10px;
     line-height:1.4;
   }
-  .photo-box .placeholder svg{
-    width:28px;height:28px;margin-bottom:6px;opacity:.6;
-  }
   .num-tag{
     position:absolute;
-    top:8px;
-    left:8px;
-    background:var(--ink);
-    color:var(--paper);
+    top:7px;
+    left:7px;
+    background:var(--blue);
+    color:#fff;
+    font-family:'Space Mono',monospace;
     font-size:10px;
-    font-weight:800;
+    font-weight:700;
     letter-spacing:0.5px;
-    padding:3px 7px;
-    border-radius:3px;
+    padding:3px 8px;
+    border-radius:999px;
+    z-index:2;
   }
   .info{
     display:flex;
     justify-content:space-between;
-    align-items:flex-end;
+    align-items:center;
     gap:8px;
   }
   .name{
     font-weight:800;
-    font-size:15px;
-    line-height:1.15;
+    font-size:14.5px;
+    line-height:1.2;
+    color:#fff;
     flex:1;
   }
   .price-block{
@@ -187,54 +266,48 @@
     white-space:nowrap;
   }
   .price-old{
-    font-size:12px;
+    font-size:11px;
     color:var(--muted);
     text-decoration:line-through;
     font-weight:600;
   }
   .price{
-    font-family: Georgia, serif;
-    font-weight:900;
-    font-style:italic;
-    font-size:22px;
-    color:var(--accent-2);
+    font-family:'Bungee', cursive;
+    font-weight:400;
+    font-size:19px;
+    color:var(--ink);
+    background:var(--yellow);
+    display:inline-block;
+    padding:5px 12px;
+    border-radius:999px;
+    border:2.5px solid var(--ink);
+    transform:rotate(-4deg);
+    box-shadow:2px 2px 0 rgba(0,0,0,.35);
     white-space:nowrap;
-  }
-  .discount-badge{
-    position:absolute;
-    top:8px;
-    right:8px;
-    background:var(--accent);
-    color:#fff;
-    font-size:10px;
-    font-weight:800;
-    letter-spacing:0.5px;
-    padding:3px 7px;
-    border-radius:3px;
-    transform:rotate(3deg);
   }
   .compare-row{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:8px;
+    gap:10px;
   }
   .compare-label{
+    font-family:'Space Mono',monospace;
     font-size:9px;
     letter-spacing:1px;
     text-transform:uppercase;
-    font-weight:800;
+    font-weight:700;
     color:var(--muted);
-    margin-bottom:4px;
+    margin-bottom:5px;
     display:block;
   }
   .amazon-box{
     aspect-ratio:1/1;
-    border:2px dashed #9aa8c7;
-    border-radius:4px;
+    border:3px solid #ffd18a;
+    border-radius:14px;
     display:flex;
     align-items:center;
     justify-content:center;
-    background:#eef1f8;
+    background:var(--window);
     cursor:pointer;
     position:relative;
     overflow:hidden;
@@ -247,33 +320,34 @@
   }
   .amazon-box .placeholder{
     text-align:center;
-    color:#5b6b8f;
-    font-size:11px;
+    color:#8a6c2f;
+    font-size:10.5px;
+    font-weight:700;
     padding:8px;
     line-height:1.3;
-  }
-  .amazon-box .placeholder svg{
-    width:22px;height:22px;margin-bottom:4px;opacity:.6;
   }
   .amazon-tag{
     position:absolute;
     top:6px;
     left:6px;
-    background:#232f3e;
-    color:#f4c518;
+    background:var(--amazon-navy);
+    color:var(--amazon-gold);
+    font-family:'Space Mono',monospace;
     font-size:9px;
-    font-weight:800;
+    font-weight:700;
     letter-spacing:0.5px;
-    padding:2px 6px;
-    border-radius:3px;
+    padding:3px 7px;
+    border-radius:999px;
+    z-index:2;
   }
   .brand-strip{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    border-top:2px solid var(--ink);
-    padding-top:8px;
-    font-size:10px;
+    border-top:2px solid rgba(255,255,255,.14);
+    padding-top:9px;
+    font-family:'Space Mono',monospace;
+    font-size:9.5px;
     letter-spacing:1px;
     text-transform:uppercase;
     color:var(--muted);
@@ -286,41 +360,51 @@
   }
   .card-actions button{
     flex:1;
-    padding:8px 4px;
+    padding:9px 4px;
     font-size:11px;
-    border:2px solid var(--ink);
+    font-weight:800;
+    border:2.5px solid var(--ink);
     border-radius:999px;
-    background:var(--card);
-    font-weight:700;
+    background:#fff;
     cursor:pointer;
   }
+  .card-actions button.pickAmazon{
+    background:var(--amazon-navy);
+    color:var(--amazon-gold);
+    border-color:var(--amazon-navy);
+  }
   .card-actions button.dl{
-    background:var(--accent);
+    background:var(--orange);
     color:#fff;
-    border-color:var(--accent);
+    border-color:var(--ink);
   }
   .card[data-hidden="true"]{display:none;}
   input[type=file]{display:none;}
   footer{
     text-align:center;
-    font-size:12px;
+    font-family:'Space Mono',monospace;
+    font-size:11.5px;
     color:var(--muted);
-    padding:20px;
+    padding:24px 20px;
   }
   @media (max-width:480px){
-    .toolbar{top:88px;}
+    .toolbar{top:104px;}
+    header{flex-wrap:wrap;}
   }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Palm Beach Funko Sale</h1>
-  <div class="sub">Flyers listos para Marketplace · <span id="totalCount">100</span> piezas</div>
+  <div class="pop-badge">POP!</div>
+  <div>
+    <h1>FUNKO <span>SALE</span></h1>
+    <div class="sub">Colección Palm Beach · <span id="totalCount">100</span> piezas · Precios de coleccionista</div>
+  </div>
 </header>
 
 <div class="toolbar">
-  <input type="text" id="search" placeholder="Buscar funko por nombre o número...">
+  <input type="text" id="search" placeholder="🔍 Busca tu Funko por nombre o número...">
   <span class="count-pill" id="visibleCount">100 / 100</span>
   <button class="btn outline" id="btnHideDone">Ocultar sin foto</button>
   <button class="btn accent" id="btnZip">Descargar todos (.zip)</button>
@@ -329,52 +413,104 @@
 
 <div class="grid" id="grid"></div>
 
-<footer>Hecho para vender rápido y bonito. Toca cualquier foto para reemplazarla.</footer>
+<footer>✦ Hecho a mano para vender rápido y bonito. Toca cualquier ventana para agregar tu foto. ✦</footer>
 
 <script>
-const FUNKOS = [{"name": "Cell (First Form)", "num": 947, "price": 17.0}, {"name": "Prince Vegeta", "num": 863, "price": 17.0}, {"name": "Mecha Frieza", "num": 705, "price": 16.0}, {"name": "Krillin", "num": 706, "price": 15.0}, {"name": "Kami", "num": 952, "price": 12.0}, {"name": "Mina Ashido", "num": 790, "price": 17.0}, {"name": "Best Jeanist", "num": 786, "price": 16.0}, {"name": "Present Mic", "num": 920, "price": 18.5}, {"name": "Infinite Deku With Eri", "num": 1010, "price": 33.0}, {"name": "Eijiro Unbreakable", "num": 1009, "price": 29.0}, {"name": "Mirio Togata", "num": 1004, "price": 17.0}, {"name": "Ryukyu", "num": 1007, "price": 9.0}, {"name": "Eri", "num": 1011, "price": 16.0}, {"name": "Sir Night Eye", "num": 1006, "price": 12.0}, {"name": "Hawks", "num": 1141, "price": 14.5}, {"name": "All Might", "num": 821, "price": 86.0}, {"name": "Slipknot Corey Taylor", "num": 177, "price": 26.5}, {"name": "Ozuna", "num": 203, "price": 18.5}, {"name": "News Of The World", "num": 6, "price": 29.0}, {"name": "Scratchy", "num": 904, "price": 17.0}, {"name": "Itchy", "num": 903, "price": 17.0}, {"name": "Couch Homer", "num": 909, "price": 24.0}, {"name": "Dwight Schrute As Scranton Strangle", "num": 1045, "price": 12.0}, {"name": "Miles Morales (Bodega Cat Suit)", "num": 767, "price": 16.0}, {"name": "Miles Morales (Purple Rain)", "num": 839, "price": 17.0}, {"name": "Miles Morales (S.T.R.I.K.E. Suit)", "num": 766, "price": 16.0}, {"name": "Miles Morales (Crimson Cowl Suit)", "num": 770, "price": 14.5}, {"name": "Miles Morales (2020 Suit)", "num": 769, "price": 14.5}, {"name": "Backyard Griller Deadpool", "num": 774, "price": 16.0}, {"name": "Arachknight", "num": 859, "price": 17.0}, {"name": "Miles Morales (Programmable Matter Suit)", "num": 773, "price": 16.0}, {"name": "Miles Morales (Advanced Tech Suit)", "num": 772, "price": 16.0}, {"name": "Miles Morales (Winter Suit)", "num": 771, "price": 16.0}, {"name": "Godspeed", "num": 1100, "price": 16.0}, {"name": "Thor Captain America Black Widow Hawkeye Hulk Iron Man", "num": null, "price": 66.0}, {"name": "Sinister Six Doctor Octopus", "num": 1013, "price": 25.0}, {"name": "Zombie Hunter Spidey", "num": 945, "price": 17.0}, {"name": "Rogue", "num": 423, "price": 29.0}, {"name": "Hulk", "num": 463, "price": 21.0}, {"name": "Kenny", "num": 463, "price": 12.0}, {"name": "Blue Eyes Toon Dragon", "num": 1062, "price": 17.0}, {"name": "Mai Valentine", "num": 1060, "price": 14.5}, {"name": "Maximillion Pegasus", "num": 716, "price": 17.0}, {"name": "Boruto", "num": 1035, "price": 13.0}, {"name": "Kawaki", "num": 1036, "price": 10.5}, {"name": "Shikadai", "num": 1039, "price": 6.5}, {"name": "Eevee", "num": 577, "price": 16.0}, {"name": "Mew", "num": 643, "price": 18.5}, {"name": "Charizard", "num": 843, "price": 17.0}, {"name": "Pidgeotto", "num": 849, "price": 16.0}, {"name": "Dragonite", "num": 850, "price": 20.0}, {"name": "Lucario", "num": 856, "price": 18.5}, {"name": "Queen Summer", "num": 955, "price": 18.5}, {"name": "Story Train Evil Morty", "num": 953, "price": 17.0}, {"name": "Death Crystal Morty", "num": 660, "price": 18.5}, {"name": "Morty With Laptop", "num": 742, "price": 21.0}, {"name": "Gamer Rick", "num": 741, "price": 26.5}, {"name": "Tracksuit Jerry", "num": 574, "price": 31.5}, {"name": "Korvo", "num": 974, "price": 16.0}, {"name": "Jesse", "num": 977, "price": 10.5}, {"name": "Yumyulack", "num": 976, "price": 13.0}, {"name": "Beth Harmon With Trophies", "num": 1121, "price": 10.5}, {"name": "Beth Harmon With Rook", "num": 1122, "price": 6.5}, {"name": "Beth Harmon Final Game", "num": 1123, "price": 13.0}, {"name": "Albus Dumbledore With Hogwarts", "num": 27, "price": 29.0}, {"name": "Harry Potter Pushing Trolley", "num": 135, "price": 34.5}, {"name": "Hermione Granger", "num": 133, "price": 14.5}, {"name": "Harry Potter", "num": 132, "price": 14.5}, {"name": "Ron Weasley", "num": 134, "price": 16.0}, {"name": "Sub-Zero", "num": 1057, "price": 18.5}, {"name": "Ned Stark", "num": 93, "price": 29.0}, {"name": "Khal Drogo", "num": 90, "price": 20.0}, {"name": "Fire Lord Ozai", "num": 999, "price": 13.0}, {"name": "Asuna", "num": 989, "price": 17.0}, {"name": "Kirito", "num": 990, "price": 18.5}, {"name": "Leafa", "num": 991, "price": 10.5}, {"name": "Lumpy Space Princess", "num": 1075, "price": 21.0}, {"name": "Princess Bubblegum", "num": 1076, "price": 24.0}, {"name": "Sulley", "num": 1156, "price": 16.0}, {"name": "Celia", "num": 1154, "price": 13.0}, {"name": "Buzz Lightyear Xl-01", "num": 1210, "price": 24.0}, {"name": "Player 001 Oh Il Nam", "num": 1223, "price": 12.0}, {"name": "Player 456 Seong Gi Hun", "num": 1222, "price": 14.5}, {"name": "Player 067 Kang Sa Byeok", "num": 1224, "price": 16.0}, {"name": "Round Masked Worker", "num": 1226, "price": 13.0}, {"name": "Player 199 Ali", "num": 1221, "price": 10.5}, {"name": "Player 218 Cho Sang Woo", "num": 1225, "price": 10.5}, {"name": "Ciri", "num": 1191, "price": 12.0}, {"name": "Jaskier", "num": 1194, "price": 12.0}, {"name": "Yennefer", "num": 1193, "price": 10.5}, {"name": "Geralt", "num": 1168, "price": 21.0}, {"name": "Geralt", "num": 1192, "price": 10.5}, {"name": "Neo", "num": 1172, "price": 16.0}, {"name": "Eleven", "num": 1185, "price": 26.5}, {"name": "Duel Of The Fates Darth Maul", "num": 506, "price": 39.5}, {"name": "Helsinki", "num": 913, "price": 12.0}, {"name": "Oslo", "num": 914, "price": 16.0}, {"name": "Rio", "num": 917, "price": 16.0}, {"name": "Moscu", "num": 918, "price": 18.5}, {"name": "Jhonny Silverhand", "num": 590, "price": 29.0}];
+const FUNKOS = [{"name": "Cell (First Form)", "num": 947, "price": 17.0}, {"name": "Prince Vegeta", "num": 863, "price": 17.0}, {"name": "Mecha Frieza", "num": 705, "price": 16.0}, {"name": "Krillin", "num": 706, "price": 15.0}, {"name": "Kami", "num": 952, "price": 12.0}, {"name": "Mina Ashido", "num": 790, "price": 17.0}, {"name": "Best Jeanist", "num": 786, "price": 16.0}, {"name": "Present Mic", "num": 920, "price": 18.5}, {"name": "Infinite Deku With Eri", "num": 1010, "price": 33.0}, {"name": "Eijiro Unbreakable", "num": 1009, "price": 29.0}, {"name": "Mirio Togata", "num": 1004, "price": 17.0}, {"name": "Ryukyu", "num": 1007, "price": 9.0}, {"name": "Eri", "num": 1011, "price": 16.0}, {"name": "Sir Night Eye", "num": 1006, "price": 12.0}, {"name": "Hawks", "num": 1141, "price": 14.5}, {"name": "All Might", "num": 821, "price": 86.0}, {"name": "Slipknot Corey Taylor", "num": 177, "price": 26.5}, {"name": "Ozuna", "num": 203, "price": 18.5}, {"name": "News Of The World", "num": 6, "price": 29.0}, {"name": "Scratchy", "num": 904, "price": 17.0}, {"name": "Itchy", "num": 903, "price": 17.0}, {"name": "Couch Homer", "num": 909, "price": 24.0}, {"name": "Dwight Schrute As Scranton Strangle", "num": 1045, "price": 12.0}, {"name": "Miles Morales (Bodega Cat Suit)", "num": 767, "price": 16.0}, {"name": "Miles Morales (Purple Rain)", "num": 839, "price": 17.0}, {"name": "Miles Morales (S.T.R.I.K.E. Suit)", "num": 766, "price": 16.0}, {"name": "Miles Morales (Crimson Cowl Suit)", "num": 770, "price": 14.5}, {"name": "Miles Morales (2020 Suit)", "num": 769, "price": 14.5}, {"name": "Backyard Griller Deadpool", "num": 774, "price": 25.0}, {"name": "Arachknight", "num": 859, "price": 17.0}, {"name": "Miles Morales (Programmable Matter Suit)", "num": 773, "price": 16.0}, {"name": "Miles Morales (Advanced Tech Suit)", "num": 772, "price": 16.0}, {"name": "Miles Morales (Winter Suit)", "num": 771, "price": 16.0}, {"name": "Godspeed", "num": 1100, "price": 16.0}, {"name": "Thor Captain America Black Widow Hawkeye Hulk Iron Man", "num": null, "price": 66.0}, {"name": "Sinister Six Doctor Octopus", "num": 1013, "price": 25.0}, {"name": "Zombie Hunter Spidey", "num": 945, "price": 17.0}, {"name": "Rogue", "num": 423, "price": 29.0}, {"name": "Hulk", "num": 463, "price": 21.0}, {"name": "Kenny", "num": 463, "price": 12.0}, {"name": "Blue Eyes Toon Dragon", "num": 1062, "price": 17.0}, {"name": "Mai Valentine", "num": 1060, "price": 12.0}, {"name": "Maximillion Pegasus", "num": 716, "price": 17.0}, {"name": "Boruto", "num": 1035, "price": 13.0}, {"name": "Kawaki", "num": 1036, "price": 6.0}, {"name": "Shikadai", "num": 1039, "price": 6.5}, {"name": "Eevee", "num": 577, "price": 16.0}, {"name": "Mew", "num": 643, "price": 18.5}, {"name": "Charizard", "num": 843, "price": 17.0}, {"name": "Pidgeotto", "num": 849, "price": 16.0}, {"name": "Dragonite", "num": 850, "price": 20.0}, {"name": "Lucario", "num": 856, "price": 18.5}, {"name": "Queen Summer", "num": 955, "price": 18.5}, {"name": "Story Train Evil Morty", "num": 953, "price": 17.0}, {"name": "Death Crystal Morty", "num": 660, "price": 12.0}, {"name": "Morty With Laptop", "num": 742, "price": 21.0}, {"name": "Gamer Rick", "num": 741, "price": 26.5}, {"name": "Tracksuit Jerry", "num": 574, "price": 31.5}, {"name": "Korvo", "num": 974, "price": 16.0}, {"name": "Jesse", "num": 977, "price": 11.0}, {"name": "Yumyulack", "num": 976, "price": 13.0}, {"name": "Beth Harmon With Trophies", "num": 1121, "price": 10.5}, {"name": "Beth Harmon With Rook", "num": 1122, "price": 6.5}, {"name": "Beth Harmon Final Game", "num": 1123, "price": 13.0}, {"name": "Albus Dumbledore With Hogwarts", "num": 27, "price": 29.0}, {"name": "Harry Potter Pushing Trolley", "num": 135, "price": 34.5}, {"name": "Hermione Granger", "num": 133, "price": 14.5}, {"name": "Harry Potter", "num": 132, "price": 14.5}, {"name": "Ron Weasley", "num": 134, "price": 16.0}, {"name": "Sub-Zero", "num": 1057, "price": 18.5}, {"name": "Ned Stark", "num": 93, "price": 29.0}, {"name": "Khal Drogo", "num": 90, "price": 20.0}, {"name": "Fire Lord Ozai", "num": 999, "price": 13.0}, {"name": "Asuna", "num": 989, "price": 17.0}, {"name": "Kirito", "num": 990, "price": 18.5}, {"name": "Leafa", "num": 991, "price": 10.5}, {"name": "Lumpy Space Princess", "num": 1075, "price": 21.0}, {"name": "Princess Bubblegum", "num": 1076, "price": 24.0}, {"name": "Sulley", "num": 1156, "price": 16.0}, {"name": "Celia", "num": 1154, "price": 13.0}, {"name": "Buzz Lightyear Xl-01", "num": 1210, "price": 24.0}, {"name": "Player 001 Oh Il Nam", "num": 1223, "price": 12.0}, {"name": "Player 456 Seong Gi Hun", "num": 1222, "price": 10.0}, {"name": "Player 067 Kang Sa Byeok", "num": 1224, "price": 16.0}, {"name": "Round Masked Worker", "num": 1226, "price": 13.0}, {"name": "Player 199 Ali", "num": 1221, "price": 10.5}, {"name": "Player 218 Cho Sang Woo", "num": 1225, "price": 10.5}, {"name": "Ciri", "num": 1191, "price": 12.0}, {"name": "Jaskier", "num": 1194, "price": 8.0}, {"name": "Yennefer", "num": 1193, "price": 10.5}, {"name": "Geralt", "num": 1168, "price": 21.0}, {"name": "Geralt", "num": 1192, "price": 10.5}, {"name": "Neo", "num": 1172, "price": 16.0}, {"name": "Eleven", "num": 1185, "price": 26.5}, {"name": "Duel Of The Fates Darth Maul", "num": 506, "price": 39.5}, {"name": "Helsinki", "num": 913, "price": 12.0}, {"name": "Oslo", "num": 914, "price": 16.0}, {"name": "Rio", "num": 917, "price": 16.0}, {"name": "Moscu", "num": 918, "price": 18.5}, {"name": "Jhonny Silverhand", "num": 590, "price": 29.0}];
 
 const grid = document.getElementById('grid');
 const totalCount = document.getElementById('totalCount');
 const visibleCount = document.getElementById('visibleCount');
 totalCount.textContent = FUNKOS.length;
 
-// iPadOS reports as "MacIntosh" with touch support, so check that too.
+// Franchise-inspired color themes (general palette association, not copied
+// artwork) for the first 10 items, requested as a preview of the concept.
+// `icon` is a hand-drawn generic outline shape (not copied art) evoking the
+// theme: cloud, orb, radar, droplet, etc. `iconColor`/`iconColor2` are the
+// stroke colors used to two-tone it where it fits the franchise palette.
+const THEMES = {
+  947:  {name:'Dragon Ball Z',    from:'#241109', to:'#0c0c12', stripe:'#ff7a1a', glow:'rgba(255,122,26,.35)',
+         icon:'radar', iconColor:'#4fb8ff', iconColor2:'#ff7a1a'},   // Cell — Dragon Radar, blue screen / orange casing
+  863:  {name:'Dragon Ball Z',    from:'#141b3d', to:'#0c0c12', stripe:'#ffce3d', glow:'rgba(255,206,61,.30)',
+         icon:'aura',  iconColor:'#ffce3d', iconColor2:'#4fb8ff'},   // Vegeta — Saiyan power aura, gold / blue
+  705:  {name:'Dragon Ball Z',    from:'#241338', to:'#0c0c12', stripe:'#c9a3ff', glow:'rgba(201,163,255,.30)',
+         icon:'scouter', iconColor:'#c9a3ff', iconColor2:'#ff7a1a'}, // Frieza — scouter lens, purple / orange blip
+  706:  {name:'Dragon Ball Z',    from:'#2a1608', to:'#0c0c12', stripe:'#ff9d3d', glow:'rgba(255,157,61,.30)',
+         icon:'cloud', iconColor:'#ff9d3d', iconColor2:'#4fb8ff'},   // Krillin — Nimbus cloud, orange / sky blue
+  952:  {name:'Dragon Ball Z',    from:'#08251f', to:'#0c0c12', stripe:'#2fe6d6', glow:'rgba(47,230,214,.28)',
+         icon:'orb', iconColor:'#ffce3d', iconColor2:'#2fe6d6'},     // Kami — Dragon Ball orb, gold / turquoise
+  790:  {name:'My Hero Academia', from:'#2a0a20', to:'#0c0c12', stripe:'#ff3d9e', glow:'rgba(255,61,158,.32)',
+         icon:'droplet', iconColor:'#ff3d9e', iconColor2:null},      // Mina — acid droplet
+  786:  {name:'My Hero Academia', from:'#0c1a2e', to:'#0c0c12', stripe:'#5da9e9', glow:'rgba(93,169,233,.30)',
+         icon:'swirl', iconColor:'#5da9e9', iconColor2:null},        // Best Jeanist — fabric/wind swirl
+  920:  {name:'My Hero Academia', from:'#221c05', to:'#0c0c12', stripe:'#ffd23f', glow:'rgba(255,210,63,.32)',
+         icon:'soundwave', iconColor:'#ffd23f', iconColor2:null},    // Present Mic — sound waves
+  1010: {name:'My Hero Academia', from:'#0c2412', to:'#0c0c12', stripe:'#ff4d4d', glow:'rgba(255,77,77,.30)',
+         icon:'spark', iconColor:'#ff4d4d', iconColor2:'#7ce68a'},   // Deku — spark fist, red / green
+  1009: {name:'My Hero Academia', from:'#2a0c10', to:'#0c0c12', stripe:'#ff5a3d', glow:'rgba(255,90,61,.32)',
+         icon:'crystal', iconColor:'#ff5a3d', iconColor2:null},      // Eijiro — hardened crystal facets
+};
+
+// Generic hand-drawn outline shapes (viewBox 0 0 120 120), reused per icon key.
+const ICON_PATHS = {
+  radar: '<circle cx="60" cy="60" r="34"/><circle cx="60" cy="60" r="20"/><circle cx="60" cy="60" r="4" class="c1fill"/><path d="M60 26v-14M60 94v14M26 60h-14M94 60h14" class="c2"/>',
+  aura: '<path d="M60 14c10 16 26 20 26 40 0 18-14 32-26 32S34 72 34 54c0-20 16-24 26-40z"/><path d="M60 40c5 8 12 10 12 20 0 8-6 14-12 14" class="c2"/>',
+  scouter: '<circle cx="60" cy="60" r="26"/><path d="M84 60h16M60 34a26 26 0 0 1 0 52"/><path d="M50 60l7 7 13-15" class="c2"/>',
+  cloud: '<path d="M34 74a16 16 0 0 1 2-32 20 20 0 0 1 38-6 16 16 0 0 1 12 30z"/><path d="M40 86q20-6 40 0" class="c2"/>',
+  orb: '<circle cx="60" cy="60" r="30"/><path d="M60 40l3 7 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z" class="c2fill"/>',
+  droplet: '<path d="M60 18c14 20 24 34 24 48a24 24 0 0 1-48 0c0-14 10-28 24-48z"/>',
+  swirl: '<path d="M60 20a34 34 0 1 0 24 58"/><path d="M84 78l-2-14-14 4" class="c2"/>',
+  soundwave: '<path d="M30 60h10M50 40v40M70 26v68M90 46v28"/>',
+  spark: '<path d="M66 14 38 66h18l-4 40 34-58H68z"/>',
+  crystal: '<path d="M60 16 92 46 76 104H44L28 46zM28 46h64M44 104 60 46 76 104M60 16v30" class="c2"/>',
+};
+
+
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
 // Safari on iOS/iPadOS ignores the `download` attribute, so the file never
 // reaches the Files/Photos app that way. Instead, open the image full-screen
 // in a new tab so the person can long-press it and choose "Add to Photos".
-async function saveCanvasImage(canvas, filename, preOpenedWin) {
+async function saveCanvasImage(canvas, filename) {
+  // 1) Native share sheet: works on iOS regardless of browser (Safari, Brave,
+  // Chrome...) because it's a system UI, not a popup that shields can block.
   if (navigator.share && canvas.toBlob) {
-    // Best path on iOS: native share sheet has a real "Save Image" option.
     try {
       const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
       const file = new File([blob], filename, {type: 'image/png'});
       if (navigator.canShare && navigator.canShare({files: [file]})) {
-        if (preOpenedWin) preOpenedWin.close();
         await navigator.share({files: [file], title: filename});
         return;
       }
     } catch (err) {
-      // Fall through to the other methods below if sharing was cancelled or unsupported.
+      // Cancelled or unsupported here — fall through to the next method.
     }
   }
-  if (isIOS) {
-    const win = preOpenedWin && !preOpenedWin.closed ? preOpenedWin : window.open();
-    if (win) {
-      win.document.write(`<img src="${canvas.toDataURL('image/png')}" style="width:100%;height:auto;">`);
-      win.document.title = filename;
-    } else {
-      alert('Habilita las ventanas emergentes para este sitio en Ajustes > Safari, o abre este archivo directamente en Safari (no dentro de la app de Claude) para poder guardar la imagen.');
-    }
+  // 2) Blob + <a download>: more reliable on mobile WebKit than a data: URI,
+  // and doesn't need popup permission at all.
+  try {
+    const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.download = filename;
+    link.href = url;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
     return;
+  } catch (err) {
+    // Fall through to the last-resort method below.
   }
-  const link = document.createElement('a');
-  link.download = filename;
-  link.href = canvas.toDataURL('image/png');
-  link.click();
+  // 3) Last resort: open in a new tab so the image can be long-pressed and saved.
+  const win = window.open();
+  if (win) {
+    win.document.write(`<img src="${canvas.toDataURL('image/png')}" style="width:100%;height:auto;">`);
+    win.document.title = filename;
+  } else {
+    alert('No se pudo guardar. Revisa si tu navegador tiene bloqueadas las ventanas emergentes para este sitio (en Brave: toca el ícono del le\u00f3n junto a la barra de direcci\u00f3n > Site Settings > Pop-ups), o prueba abriendo esta p\u00e1gina en Safari.');
+  }
 }
 
 FUNKOS.forEach((f, i) => {
@@ -384,43 +520,52 @@ FUNKOS.forEach((f, i) => {
   card.dataset.name = f.name.toLowerCase();
   card.dataset.num = f.num ? String(f.num) : '';
   card.dataset.hasPhoto = 'false';
+  card.dataset.accent = i % 3;
   card.id = id;
+
+  const theme = THEMES[f.num];
+  const flyerBg = theme
+    ? `linear-gradient(155deg, ${theme.from} 0%, ${theme.to} 65%)`
+    : null;
+  if (theme) {
+    card.style.boxShadow = `7px 7px 0 rgba(12,12,18,.25), 0 0 40px ${theme.glow} inset`;
+  }
 
   const numTag = f.num ? ('#' + f.num) : 'POP';
   const hasPrice = f.price != null;
   const priceStr = hasPrice ? ('$' + f.price.toFixed(2)) : 'Consultar';
 
   card.innerHTML = `
-    <div class="flyer" id="${id}_flyer">
-      <div class="compare-row">
-        <div>
-          <span class="compare-label">Mi precio</span>
-          <div class="photo-box" data-idx="${i}">
-            <span class="num-tag">${numTag}</span>
-            <div class="placeholder">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 15l-5-5-9 9"/></svg>
-              Toca para<br>agregar foto
+    <div class="flyer" id="${id}_flyer" style="${flyerBg ? `background:${flyerBg};` : ''}">
+      <div class="card-stripe" style="${theme ? `background:${theme.stripe};` : ''}"></div>
+      ${theme ? `<div class="franchise-tag">${theme.name}</div>` : ''}
+      <div class="flyer-body">
+        <div class="compare-row">
+          <div>
+            <span class="compare-label">My Price</span>
+            <div class="photo-box" data-idx="${i}">
+              <div class="placeholder">
+                Toca para<br>agregar foto
+              </div>
+            </div>
+          </div>
+          <div>
+            <span class="compare-label">Amazon</span>
+            <div class="amazon-box" data-idx="${i}">
+              <div class="placeholder">
+                Screenshot<br>de Amazon
+              </div>
             </div>
           </div>
         </div>
-        <div>
-          <span class="compare-label">Precio en Amazon</span>
-          <div class="amazon-box" data-idx="${i}">
-            <span class="amazon-tag">amazon</span>
-            <div class="placeholder">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 15l-5-5-9 9"/></svg>
-              Screenshot<br>de Amazon
-            </div>
+        <div class="info">
+          <div class="name">${f.name}</div>
+          <div class="price-block">
+            <div class="price">${priceStr}</div>
           </div>
         </div>
+        <div class="brand-strip"><span>Funko Pop</span><span>${numTag}</span></div>
       </div>
-      <div class="info">
-        <div class="name">${f.name}</div>
-        <div class="price-block">
-          <div class="price">${priceStr}</div>
-        </div>
-      </div>
-      <div class="brand-strip"><span>Funko Pop</span><span>${numTag}</span></div>
     </div>
     <div class="card-actions">
       <button class="pick">Mi foto</button>
@@ -453,7 +598,7 @@ FUNKOS.forEach((f, i) => {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = (ev) => {
-      photoBox.innerHTML = `<span class="num-tag">${numTag}</span><img src="${ev.target.result}">`;
+      photoBox.innerHTML = `<img src="${ev.target.result}">`;
       card.dataset.hasPhoto = 'true';
     };
     reader.readAsDataURL(file);
@@ -464,19 +609,16 @@ FUNKOS.forEach((f, i) => {
     if (!file) return;
     const reader = new FileReader();
     reader.onload = (ev) => {
-      amazonBox.innerHTML = `<span class="amazon-tag">amazon</span><img src="${ev.target.result}">`;
+      amazonBox.innerHTML = `<img src="${ev.target.result}">`;
     };
     reader.readAsDataURL(file);
   });
 
   dlBtn.addEventListener('click', async () => {
     dlBtn.textContent = '...';
-    // Open the tab immediately, synchronously with the click, so iOS Safari
-    // doesn't treat it as a blocked popup once the async render finishes.
-    const preOpenedWin = isIOS ? window.open('about:blank') : null;
-    const canvas = await html2canvas(card.querySelector('.flyer'), {scale: 3, backgroundColor: '#ffffff'});
+    const canvas = await html2canvas(card.querySelector('.flyer'), {scale: 3, backgroundColor: null, useCORS: true});
     const filename = f.name.replace(/[^a-z0-9]+/gi, '_') + '.png';
-    await saveCanvasImage(canvas, filename, preOpenedWin);
+    await saveCanvasImage(canvas, filename);
     dlBtn.textContent = 'Descargar';
   });
 });
@@ -514,7 +656,7 @@ document.getElementById('btnZip').addEventListener('click', async () => {
     return;
   }
   if (isIOS) {
-    alert('En iPad el ZIP no siempre se guarda bien. Mejor usa "Descargar" en cada tarjeta \u2014 se abrir\u00e1n para que las guardes una por una en Fotos.');
+    alert('En navegadores de iPad/iPhone el ZIP puede fallar. Mejor usa "Descargar" en cada tarjeta \u2014 ahora usa el men\u00fa nativo de compartir o descarga directa, que funciona mejor en m\u00f3vil.');
     return;
   }
   progress.style.display = 'block';
@@ -522,7 +664,7 @@ document.getElementById('btnZip').addEventListener('click', async () => {
   for (let i = 0; i < targets.length; i++) {
     const card = targets[i];
     progress.textContent = `Generando ${i+1} / ${targets.length}...`;
-    const canvas = await html2canvas(card.querySelector('.flyer'), {scale: 3, backgroundColor: '#ffffff'});
+    const canvas = await html2canvas(card.querySelector('.flyer'), {scale: 3, backgroundColor: null, useCORS: true});
     const dataUrl = canvas.toDataURL('image/png').split(',')[1];
     const name = card.querySelector('.name').textContent.replace(/[^a-z0-9]+/gi, '_');
     zip.file(name + '.png', dataUrl, {base64: true});
