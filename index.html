@@ -507,10 +507,9 @@ const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
 // no separate database needed to look anything up.
 const CLOUDINARY_CLOUD_NAME = 'zvp7ysdd';
 const CLOUDINARY_UPLOAD_PRESET = 'funko_flyers';
-const CLOUDINARY_FOLDER = 'funko-flyers';
 
 function cloudinaryUrl(publicId) {
-  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/${CLOUDINARY_FOLDER}/${publicId}`;
+  return `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload/${publicId}`;
 }
 
 async function uploadToCloudinary(file, publicId) {
